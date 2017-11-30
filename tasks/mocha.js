@@ -131,9 +131,9 @@ module.exports = function(grunt) {
       // var runner = new EventEmitter();
       // phantomjsEventManager.add(url, runner);
 
-      const options = {
+      const runnerOptions = {
         file: url,                           // test page path
-        reporter: 'dot',                             // mocha reporter name
+        reporter: options.reporter,                             // mocha reporter name
         width: 800,                                  // viewport width
         height: 600,                                 // viewport height
         timeout: 120000,                             // timeout in ms
@@ -142,10 +142,11 @@ module.exports = function(grunt) {
         args: ['no-sandbox']                         // chrome arguments
       };
       
-      runner(options)
+      runner(runnerOptions)
         .then(result => {
             let json = JSON.stringify(result);
-            grunt.log.ok(json);
+            grunt.log.subhead("test done");
+            grunt.verbose.writeln(json);
             next()
         });
       // // Clear runner event listener when test is over

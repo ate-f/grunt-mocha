@@ -137,9 +137,9 @@ module.exports = function(grunt) {
         width: 800,                                  // viewport width
         height: 600,                                 // viewport height
         timeout: 120000,                             // timeout in ms
-        //executablePath: '/usr/bin/chrome-unstable',  // chrome executable path
+        //executablePath: '/usr/bin/chrome-unstable',  // chrome executable path        
         visible: false,                               // show chrome window
-        args: ['no-sandbox']                         // chrome arguments
+        args: ['no-sandbox','disable-web-security']                         // chrome arguments
       };
       
       runner(runnerOptions)
@@ -149,11 +149,16 @@ module.exports = function(grunt) {
             grunt.log.subhead("test done");
             grunt.verbose.writeln(json);
             next()
+        })
+        .catch(err => {
+          if(options.bail){
+            grunt.fail.warn(err);
+          } else {
+            grunt.log.error(err);
+          }
+          next();
         });
-      // // Clear runner event listener when test is over
-      // runner.on('end', function() {
-      //   phantomjsEventManager.remove(url);
-      // });
+      
 
       // // Set Mocha reporter
       // var Reporter = null;
@@ -179,50 +184,7 @@ module.exports = function(grunt) {
       // if (Reporter === null) {
       //   grunt.fatal('Specified reporter is unknown or unresolvable: ' + options.reporter);
       // }
-      // reporter = new Reporter(runner, options);
-
-      // // Launch PhantomJS.
-      // phantomjs.spawn(url, {
-      //   // Exit code to use if PhantomJS fails in an uncatchable way.
-      //   failCode: 90,
-      //   // Additional PhantomJS options.
-      //   options: PhantomjsOptions,
-      //   // Do stuff when done.
-      //   done: function(err) {
-      //     var stats = runner.stats;
-      //     testStats.push(stats);
-
-      //     if (err) {
-      //       // Show Growl notice
-      //       // @TODO: Get an example of this
-      //       // growl('PhantomJS Error!');
-
-      //       // If there was a PhantomJS error, abort the series.
-      //       grunt.fatal(err);
-      //       done(false);
-      //     } else {
-      //       // If failures, show growl notice
-      //       if (stats.failures > 0) {
-      //         var reduced = helpers.reduceStats([stats]);
-      //         var failMsg = reduced.failures + '/' + reduced.tests +
-      //           ' tests failed (' + reduced.duration + 's)';
-
-      //         // Show Growl notice, if avail
-      //         growl(failMsg, {
-      //           image: asset('growl/error.png'),
-      //           title: 'Failure in ' + grunt.task.current.target,
-      //           priority: 3
-      //         });
-
-      //         // Bail tests if bail option is true
-      //         if (options.bail) grunt.warn(failMsg);
-      //       }
-
-      //       // Process next file/url
-      //       next();
-      //     }
-      //   }
-      // });
+      // reporter = new Reporter(runner, options);      
     },
 
     // All tests have been run.

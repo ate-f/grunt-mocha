@@ -9,14 +9,7 @@ module.exports = function(grunt) {
   var port = 8981;
 
   grunt.initConfig({
-    jshint: {
-      all: [
-        'Gruntfile.js',
-        'tasks/**/*.js', ],
-      options: {
-        jshintrc: '.jshintrc'
-      }
-    },
+    
     watch: {
       // If you want to watch files and run tests automatically on change
       test: {
@@ -31,6 +24,9 @@ module.exports = function(grunt) {
       }
     },
     mocha: {
+      options: {
+        growlOnSuccess: false,
+      },
       // runs all html files (except test2.html) in the test dir
       // In this example, there's only one, but you can add as many as
       // you want. You can split them up into different groups here
@@ -51,7 +47,7 @@ module.exports = function(grunt) {
             ignoreLeaks: false,
             grep: 'food'
           },
-
+          growlOnSuccess: false,
           reporter: 'Spec',
           timeout: 10000
         }
@@ -67,7 +63,7 @@ module.exports = function(grunt) {
           },
 
           reporter: 'Nyan',
-
+          growlOnSuccess: false,
           // URLs passed through as options
           urls: ['http://localhost:' + port + '/example/test/test2.html'],
         }
@@ -81,6 +77,7 @@ module.exports = function(grunt) {
             ignoreLeaks: false,
             grep: 'food'
           },
+          growlOnSuccess: false,
           reporter: './example/test/reporter/simple',
         }
       },
@@ -93,6 +90,7 @@ module.exports = function(grunt) {
             ignoreLeaks: false,
             grep: 'food'
           },
+          growlOnSuccess: false,
           log: true
         }
       },
@@ -102,6 +100,7 @@ module.exports = function(grunt) {
         src: ['example/test/test2.html'],
         dest: 'example/test/results/spec.out',
         options: {
+          growlOnSuccess: false,
           reporter: 'Spec',
         }
       },
@@ -110,7 +109,7 @@ module.exports = function(grunt) {
       testDest2: {
         options: {
           reporter: 'XUnit',
-
+          growlOnSuccess: false,
           // URLs passed through as options
           urls: ['http://localhost:' + (port + 1) + '/example/test/test2.html'],
         },
@@ -122,6 +121,7 @@ module.exports = function(grunt) {
         src: ['example/test/testBail.html'],
         // Bail option
         options: {
+          growlOnSuccess: false,
           bail: true
         }
       },
@@ -135,6 +135,7 @@ module.exports = function(grunt) {
       testPage: {
         src: ['example/test/testPage.html'],
         options: {
+          growlOnSuccess: false,
           page: {
             settings: {
               userAgent: 'grunt-mocha-agent'
@@ -180,8 +181,7 @@ module.exports = function(grunt) {
 
   grunt.loadTasks('tasks');
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-jshint');
+  // These plugins provide necessary tasks.  
   grunt.loadNpmTasks('grunt-contrib-connect');
 
 
@@ -207,5 +207,5 @@ module.exports = function(grunt) {
   ]);
 
   // By default, lint and run all tests.
-  grunt.task.registerTask('default', ['jshint', 'test']);
+  grunt.task.registerTask('default', ['test']);
 };

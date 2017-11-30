@@ -25,7 +25,7 @@ exports.reduceStats = function(stats) {
     prev.passes    += stats.passes;
     prev.failures  += stats.failures;
     prev.tests     += stats.tests;
-    prev.duration  += (stats.end - stats.start);
+    prev.duration  += stats.duration;
     return prev;
   }, initial);
 

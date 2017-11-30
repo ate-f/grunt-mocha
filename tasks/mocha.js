@@ -51,7 +51,7 @@ module.exports = function(grunt) {
       // Output console.log calls
       log: false,
       // Mocha reporter
-      reporter: 'Dot',
+      reporter: 'spec',
       // Default PhantomJS timeout.
       timeout: 5000,      
       // Explicit non-file URLs to test.
@@ -145,6 +145,7 @@ module.exports = function(grunt) {
       runner(runnerOptions)
         .then(result => {
             let json = JSON.stringify(result);
+            testStats.push(result.result.stats);
             grunt.log.subhead("test done");
             grunt.verbose.writeln(json);
             next()
